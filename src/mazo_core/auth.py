@@ -33,7 +33,7 @@ def exigir_secret(env_var: str = "JWT_SECRET") -> str:
 
 JWT_SECRET = exigir_secret()
 
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTOS", "1440"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTOS", "15"))
 REFRESH_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_REFRESH_EXPIRE_MINUTOS", str(7 * 24 * 60)))
 
 
