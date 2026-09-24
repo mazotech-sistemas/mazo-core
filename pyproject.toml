@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mazo-core"
+version = "0.1.0"
+description = "Camada compartilhada Mazotech: autenticacao JWT/bcrypt, abstracao de canais WhatsApp e motor de lembretes"
+requires-python = ">=3.11"
+dependencies = [
+    "python-jose[cryptography]>=3.3",
+    "bcrypt>=4.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mazo_core"]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
