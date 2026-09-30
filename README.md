@@ -25,7 +25,7 @@ camada em vez de duplicar servicos proprios.
 ## Instalacao
 
 ```bash
-pip install git+https://github.com/thaisd808-commits/mazo-core.git
+pip install git+https://github.com/mazotech-sistemas/mazo-core.git
 ```
 
 ## Uso minimo
