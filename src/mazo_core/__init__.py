@@ -5,6 +5,7 @@ Submodulos:
   (o import exige JWT_SECRET valido; so importar quem precisa)
 - mazo_core.whatsapp: abstracao de canais (oficial/embutido/simulado)
 - mazo_core.lembretes: motor de janelas e estado de envio
+- mazo_core.branding: whitelabel por cliente (nome, logo, cores, templates)
 """
 __version__ = "0.1.0"
-__all__ = ["auth", "whatsapp", "lembretes", "__version__"]
+__all__ = ["auth", "whatsapp", "lembretes", "branding", "__version__"]
