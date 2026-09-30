@@ -28,6 +28,24 @@ camada em vez de duplicar servicos proprios.
 pip install git+https://github.com/mazotech-sistemas/mazo-core.git
 ```
 
+## Deploy em VPS (repo privado)
+
+O core é privado: pip precisa de credencial no servidor. Duas opções:
+
+```bash
+# Opcao A: token (fine-grained, só leitura nos repos mazo)
+pip install git+https://SEU_TOKEN@github.com/mazotech-sistemas/mazo-core.git@PIN
+```
+
+```bash
+# Opcao B: chave SSH de deploy (somente leitura, por servidor)
+ssh-keygen -t ed25519 -f ~/.ssh/mazo-deploy -N ""
+# cadastra a .pub como deploy key no repo, depois:
+pip install git+ssh://git@github.com/mazotech-sistemas/mazo-core.git@PIN
+```
+
+Troca PIN pelo commit fixado no requirements do produto. Sem credencial o pip falha com 404.
+
 ## Uso minimo
 
 ```python
