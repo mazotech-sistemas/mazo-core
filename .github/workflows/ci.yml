@@ -13,68 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          token: ${{ secrets.GH_PAT || github.token }}
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-
-      - name: Create venv
-        working-directory: ${{ matrix.product-dir || '.' }}
-        run: uv venv --python 3.12 .venv
-
-      - name: Install deps
-        working-directory: ${{ matrix.product-dir || '.' }}
-        run: |
-          uv pip install -p .venv/bin/python -r ${{ matrix.req-path || 'backend/requirements.txt' }}
-          # mazo-core本地 (privado), instala via editable install sem network
-          uv pip install -p .venv/bin/python --no-deps -e ${{ github.workspace }}/libs/mazo-core || true
-
-      - name: Set env
-        working-directory: ${{ matrix.product-dir || '.' }}
-        run: |
-          echo "JWT_SECRET=0123456789abcdef0123456789abcdef" >> $GITHUB_ENV
-          echo "ADMIN_SENHA_TESTE=admin123" >> $GITHUB_ENV
-          echo "WHATSAPP_CANAL=simulado" >> $GITHUB_ENV
-          echo "DATABASE_URL=sqlite:////tmp/${{ matrix.db-name || 'test.db' }}" >> $GITHUB_ENV
+      - name: Install mazo-core
+        run: python -m pip install --break-system-packages -e .
 
       - name: Run tests
-        working-directory: ${{ matrix.product-dir || '.' }}
-        run: |
-          rm -rf ./data
-          .venv/bin/python -m pytest tests/ -q -p no:cacheprovider
-
-    strategy:
-      matrix:
-        include:
-          # Produtos fabrica
-          - { product-dir: 'produtos/mazo-cobranca', req-path: 'backend/requirements.txt', db-name: 'cobranca.db' }
-          - { product-dir: 'produtos/mazo-avaliacoes', req-path: 'backend/requirements.txt', db-name: 'avaliacoes.db' }
-          - { product-dir: 'produtos/mazo-orcamento-express', req-path: 'backend/requirements.txt', db-name: 'orcamento.db' }
-          - { product-dir: 'produtos/mazo-cardapio', req-path: 'backend/requirements.txt', db-name: 'cardapio.db' }
-          - { product-dir: 'produtos/mazo-pet-salao', req-path: 'backend/requirements.txt', db-name: 'pet.db' }
-          - { product-dir: 'produtos/mazo-lembrete-retorno', req-path: 'backend/requirements.txt', db-name: 'retorno.db' }
-          - { product-dir: 'produtos/mazo-encomendas', req-path: 'backend/requirements.txt', db-name: 'encomendas.db' }
-          - { product-dir: 'produtos/mazo-comanda', req-path: 'backend/requirements.txt', db-name: 'comanda.db' }
-          - { product-dir: 'produtos/mazo-mensalidades', req-path: 'backend/requirements.txt', db-name: 'mensalidades.db' }
-          - { product-dir: 'produtos/mazo-faq', req-path: 'backend/requirements.txt', db-name: 'faq.db' }
-          # Herdados
-          - { product-dir: 'produtos/05-orcamento', req-path: 'backend/requirements.txt', db-name: '05.db' }
-          - { product-dir: 'produtos/ai-marketing-automation', req-path: 'requirements.txt', db-name: 'ai-mkt.db' }
-          - { product-dir: 'produtos/central-automacao', req-path: 'backend/requirements.txt', db-name: 'central.db' }
-          - { product-dir: 'produtos/cesta-solidaria', req-path: 'requirements.txt', db-name: 'cesta.db' }
-          - { product-dir: 'produtos/ecommerce-price-monitor', req-path: 'requirements.txt', db-name: 'epm.db' }
-          - { product-dir: 'produtos/insta-automation', req-path: 'requirements.txt', db-name: 'insta.db' }
-          - { product-dir: 'produtos/mazotech-agendamentos', req-path: 'requirements.txt', db-name: 'agendamentos.db' }
-          - { product-dir: 'produtos/mazotech-estoque', req-path: 'requirements.txt', db-name: 'estoque.db' }
-          - { product-dir: 'produtos/mazotech-whatsapp-bot', req-path: 'requirements.txt', db-name: 'bot.db' }
-          - { product-dir: 'produtos/ocr-invoice-processor', req-path: 'requirements.txt', db-name: 'ocr.db' }
-          - { product-dir: 'produtos/oficina-pro', req-path: 'backend/requirements.txt', db-name: 'oficina.db' }
-          - { product-dir: 'produtos/questionnaire-manager', req-path: 'requirements.txt', db-name: 'qm.db' }
-          - { product-dir: 'produtos/sistema-agendamento', req-path: 'backend/requirements.txt', db-name: 'sa.db' }
-          - { product-dir: 'produtos/Zelo', req-path: 'backend/requirements.txt', db-name: 'zelo.db' }
+        run: python -m pytest tests/ -q -p no:cacheprovider
