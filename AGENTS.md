@@ -12,12 +12,11 @@ Referencia rapida p/ agentes de codigo neste repo. Completa com o AGENTS.md do h
 - **Entrypoint**: N/A (lib)
 - **Testes**: tests/
 
-## Padrao fabrica
-FastAPI + SQLAlchemy >=2.0,<2.1 + SQLite demo em ./data.
-JWT_SECRET 32 chars, auth seed admin@admin.com, rate-limit login 5/min.
-GET /health e /brand.json publicos, POSTs com auth.
-TestClient nao dispara lifespan: create_all no import.
-DB limpo por rodada de teste.
+## mazo-core (biblioteca compartilhada, nao e app)
+Modulos em src/mazo_core/: auth (JWT HS256 + bcrypt, fail-fast exige
+JWT_SECRET min 32 chars), whatsapp (canais oficial/embutido/simulado),
+lembretes (janelas e estado de envio), branding.
+Instalacao: `pip install git+https://github.com/mazotech-sistemas/mazo-core.git`.
 
 ## Armadilhas locais
 - SQLAlchemy <2.1. pytest-asyncio loop scope session.
