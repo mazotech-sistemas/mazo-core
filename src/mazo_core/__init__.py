@@ -8,4 +8,4 @@ Submodulos:
 - mazo_core.branding: whitelabel por cliente (nome, logo, cores, templates)
 """
 __version__ = "0.1.0"
-__all__ = ["auth", "whatsapp", "lembretes", "branding", "__version__"]
+__all__ = ["auth", "whatsapp", "lembretes", "branding", "tenancy", "__version__"]
