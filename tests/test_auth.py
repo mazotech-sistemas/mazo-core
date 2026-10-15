@@ -23,6 +23,32 @@ def test_import_secret_curto_falha(monkeypatch):
         importlib.reload(mazo_core.auth)
 
 
+def test_import_placeholder_troque_por_32_falha(monkeypatch):
+    monkeypatch.setenv(
+        "JWT_SECRET", "troque-por-32-caracteres-minimo-0123456789abcdef"
+    )
+    import importlib
+    import mazo_core.auth
+    with pytest.raises(ValueError, match="placeholder conhecido"):
+        importlib.reload(mazo_core.auth)
+
+
+def test_import_placeholder_change_me_dev_only_falha(monkeypatch):
+    monkeypatch.setenv("JWT_SECRET", "change-me-dev-only")
+    import importlib
+    import mazo_core.auth
+    with pytest.raises(ValueError, match="placeholder conhecido"):
+        importlib.reload(mazo_core.auth)
+
+
+def test_import_placeholder_change_me_no_jwt_secret_falha(monkeypatch):
+    monkeypatch.setenv("JWT_SECRET", "change-me-no-jwt-secret")
+    import importlib
+    import mazo_core.auth
+    with pytest.raises(ValueError, match="placeholder conhecido"):
+        importlib.reload(mazo_core.auth)
+
+
 def _import_auth():
     os.environ.setdefault("JWT_SECRET", "teste-secret-com-64-characters-0123456789abcdef")
     import importlib

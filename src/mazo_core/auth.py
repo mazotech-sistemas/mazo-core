@@ -17,12 +17,22 @@ MIN_LEN_SECRET = 32
 
 
 def exigir_secret(env_var: str = "JWT_SECRET") -> str:
-    """Le e valida o segredo do JWT. Falha no import se ausente/curto."""
+    """Le e valida o segredo do JWT. Falha no import se ausente/curto/placeholder."""
+    KNOWN_PLACEHOLDERS = {
+        "troque-por-32-caracteres-minimo-0123456789abcdef",
+        "change-me-no-jwt-secret",
+        "change-me-dev-only",
+    }
     s = os.getenv(env_var)
     if not s:
         raise ValueError(
             f"{env_var} e obrigatorio no ambiente. Defina via variavel de ambiente "
             "(python -c \"import secrets; print(secrets.token_hex(32))\")."
+        )
+    if s in KNOWN_PLACEHOLDERS:
+        raise ValueError(
+            f"{env_var} esta com valor placeholder conhecido ({s}). "
+            " Gere um segredo aleatorio e substitua."
         )
     if len(s) < MIN_LEN_SECRET:
         raise ValueError(
